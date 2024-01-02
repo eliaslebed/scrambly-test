@@ -1,0 +1,102 @@
+$base-padding: 10px;
+
+.navigation {
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $base-padding;
+    position: fixed;
+    top: -50px;
+    left: 50%;
+    transform: translate(-50%, 50%);
+
+    @media (max-width: 425px) {
+      width: 100%;
+      padding: 10px 15px;
+    }
+  }
+
+  &__logo {
+    background-size: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 36px 167px;
+    background-image: url("/scrambly-logo.svg");
+  }
+
+  &__mobile-logo {
+    background-size: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 36px 36px;
+    background-image: url("/scrambly-logo-mobile.svg");
+  }
+
+  &__core {
+    gap: 32px;
+  }
+
+  &__core-mobile {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    border-top: 1px solid var(--stroke-TabBar, #eaeaea);
+    padding: 4px 8px 12px;
+    justify-content: space-around;
+    background: var(--surface-Frame-Srtong, #f5f5f5);
+  }
+
+  &__item {
+    cursor: pointer;
+    text-transform: capitalize;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: var(--Roundness-xxxl, 100px);
+    background: var(--surface-Primary-Button, #ff6915);
+
+    color: var(--text-Primary-onSurface, #fff);
+    font-weight: 600;
+
+    cursor: pointer;
+    margin-left: 230px;
+    min-width: 97px;
+    height: 44px;
+
+    @media (max-width: 1240px) {
+      margin-left: 50px;
+    }
+  }
+
+  &__icon {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &--discover {
+      background-image: url("/discover.svg");
+    }
+
+    &--withdraw {
+      background-image: url("/withdraw.svg");
+    }
+
+    &--ongoing {
+      background-image: url("/ongoing.svg");
+    }
+
+    &--bonus {
+      background-image: url("/bonus.svg");
+    }
+  }
+}

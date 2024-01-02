@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --surface-primary-button: #ff6915;
+  --text-secondary: #565656;
+  --text-primary: #303030;
+
+  --slider-width: 742px;
+  --header-height: 92px;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+
+  font-family: "Montserrat", sans-serif;
+
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+main {
+  flex: 1 0 auto;
+}
