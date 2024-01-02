@@ -4,15 +4,8 @@ import classNames from "classnames";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
+import { getWindowDimensions, screens } from "../../utils/index";
 import "./Carousel.scss";
-
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height,
-  };
-}
 
 const Carousel = ({ data }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,7 +13,7 @@ const Carousel = ({ data }) => {
     getWindowDimensions()
   );
 
-  const isMobile = windowDimensions.width <= 426;
+  const isMobile = windowDimensions.width <= screens.sm;
   const parallaxOffset = isMobile ? 0 : 280;
 
   useEffect(() => {
