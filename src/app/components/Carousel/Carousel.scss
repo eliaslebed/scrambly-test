@@ -2,12 +2,17 @@
   &__wrapper {
     justify-content: center;
     align-items: center;
-    width: var(--slider-width);
-    margin: 220px auto 45px;
+    height: 600px;
+    left: 250px;
+    overflow: hidden;
 
-    @media (max-width: 640px) {
-      width: 350px;
-      margin-top: 250px;
+    @media (max-width: 1240px) {
+      margin-top: 100px;
+      left: 0;
+    }
+
+    @media (min-width: 768px) {
+      margin-top: 100px;
     }
   }
 
@@ -50,12 +55,12 @@
     }
 
     &--left {
-      left: -200px;
+      left: 0px;
       background-image: url("/arrow-left.svg");
     }
 
     &--right {
-      right: -200px;
+      right: 0px;
       background-image: url("/arrow-right.svg");
     }
   }
@@ -71,6 +76,10 @@
     @media (max-width: 640px) {
       width: auto;
     }
+  }
+
+  &__item {
+    position: absolute;
   }
 
   &__item-wrapper {

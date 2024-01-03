@@ -13,8 +13,7 @@ const Carousel = ({ data }) => {
     getWindowDimensions()
   );
 
-  const isMobile = windowDimensions.width <= screens.sm;
-  const parallaxOffset = isMobile ? 0 : 280;
+  const isMobile = windowDimensions.width <= screens.md;
 
   useEffect(() => {
     function handleResize() {
@@ -26,10 +25,13 @@ const Carousel = ({ data }) => {
   }, []);
 
   const handleSwipe = (delta) => {
-    const newIndex =
-      delta > 0
-        ? Math.min(currentIndex + 1, data.length - 1)
-        : Math.max(currentIndex - 1, 0);
+    const newIndex = (currentIndex + delta + data.length) % data.length;
+
+    // Prevent swiping left from the first slide
+    if (delta === -1 && currentIndex === 0) {
+      return;
+    }
+
     setCurrentIndex(newIndex);
   };
 
@@ -51,79 +53,69 @@ const Carousel = ({ data }) => {
           (currentIndex === 2 && index >= 1);
         return isVisible ? 1 : 0;
 
-      case "width":
-        isVisible =
-          (currentIndex === 0 && index <= 1) ||
-          currentIndex === 1 ||
-          currentIndex === 2;
-        return isVisible ? "auto" : 0;
+      default:
+        return 0;
     }
   };
 
+  const containerWidth = data.length * 600;
+  const responsiveScale = isMobile ? "scale(1)" : "scale(1.3)";
+  const carouselOffset = 300;
+  const mobileCarouselOffset = { offset: 70, shift: 290 };
+
   return (
-    <div className="container mx-auto">
-      <div className="slider__wrapper relative">
-        <div
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{
-            transform: `translateX(-${currentIndex * parallaxOffset}px)`,
-          }}
-          {...handlers}
-        >
-          {data.map(({ id }, index) => (
+    <div className="container mx-auto relative w-full lg:w-3/4 xl:w-2/3 overflow-hidden">
+      <div
+        className="slider__wrapper relative flex transition-transform duration-500 ease-in-out"
+        style={{
+          transform: `translateX(-${currentIndex * carouselOffset}px)`,
+          width: `${containerWidth}px`,
+        }}
+        {...handlers}
+      >
+        {data.map(({ id }, index) => (
+          <div
+            key={index}
+            className="slider__item flex-shrink-0"
+            style={{
+              left: isMobile
+                ? mobileCarouselOffset.offset +
+                  index * mobileCarouselOffset.shift
+                : carouselOffset + index * carouselOffset,
+              transform:
+                index === currentIndex ? responsiveScale : "scale(.92)",
+              transition: "transform 0.5s ease-in-out",
+              opacity: calculateProperty(index, "opacity"),
+            }}
+          >
             <div
-              key={index}
-              className="flex-shrink-0"
-              style={{
-                marginLeft: !isMobile
-                  ? index === 0
-                    ? `${250}px`
-                    : `${90}px`
-                  : 60,
-                marginRight: index === data.length - 1 ? `${30}px` : `${-45}px`,
-                transform: isMobile
-                  ? "scale(1)"
-                  : index === currentIndex
-                  ? "scale(1.3)"
-                  : "scale(.92)",
-                transition: "all 0.5s ease-in-out",
-                opacity: calculateProperty(index, "opacity"),
-                width: isMobile
-                  ? index === currentIndex
-                    ? "auto"
-                    : 0
-                  : calculateProperty(index, "width"),
-              }}
+              className={classNames("slider__item-wrapper", {
+                "slider__item-wrapper--active": index === currentIndex,
+              })}
             >
-              <div
-                className={classNames("slider__item-wrapper", {
-                  "slider__item-wrapper--active": index === currentIndex,
-                })}
-              >
-                <Image
-                  key={index}
-                  src={`${id}.svg`}
-                  alt={`Image ${index + 1}`}
-                  width={238}
-                  height={198}
-                />
-              </div>
+              <Image
+                key={index}
+                src={`${id}.svg`}
+                alt={`Image ${index + 1}`}
+                width={238}
+                height={198}
+              />
             </div>
-          ))}
-        </div>
-        {currentIndex > 0 && (
-          <div
-            className="slider__arrow slider__arrow--left"
-            onClick={() => handleSwipe(-1)}
-          ></div>
-        )}
-        {currentIndex < data.length - 1 && (
-          <div
-            className="slider__arrow slider__arrow--right"
-            onClick={() => handleSwipe(1)}
-          ></div>
-        )}
+          </div>
+        ))}
       </div>
+      {currentIndex > 0 && (
+        <div
+          className="slider__arrow slider__arrow--left"
+          onClick={() => handleSwipe(-1)}
+        ></div>
+      )}
+      {currentIndex < data.length - 1 && (
+        <div
+          className="slider__arrow slider__arrow--right"
+          onClick={() => handleSwipe(1)}
+        ></div>
+      )}
       <div className="slider__text-wrapper">
         <p className="slider__title">{data[currentIndex].title}</p>
         <p className="slider__body">{data[currentIndex].body}</p>
