@@ -42,20 +42,13 @@ const Carousel = ({ data }) => {
     trackMouse: true,
   });
 
-  const calculateProperty = (index, property) => {
-    let isVisible;
+  const calculateOpacity = (index) => {
+    const isVisible =
+      (currentIndex === 0 && index <= 1) ||
+      currentIndex === 1 ||
+      (currentIndex === 2 && index >= 1);
 
-    switch (property) {
-      case "opacity":
-        isVisible =
-          (currentIndex === 0 && index <= 1) ||
-          currentIndex === 1 ||
-          (currentIndex === 2 && index >= 1);
-        return isVisible ? 1 : 0;
-
-      default:
-        return 0;
-    }
+    return isVisible ? 1 : 0;
   };
 
   const containerWidth = data.length * 600;
@@ -85,7 +78,7 @@ const Carousel = ({ data }) => {
               transform:
                 index === currentIndex ? responsiveScale : "scale(.92)",
               transition: "transform 0.5s ease-in-out",
-              opacity: calculateProperty(index, "opacity"),
+              opacity: calculateOpacity(index),
             }}
           >
             <div
